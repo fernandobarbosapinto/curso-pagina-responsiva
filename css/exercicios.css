@@ -1,0 +1,217 @@
+header{padding: 0.5em 0;}
+
+.container{
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+.destaques{margin-top: 1em;}
+
+.barra-nav{margin:0.4em 0;}
+
+.logo img{width:200px;}
+
+.logo, .secao{padding: 0 1%;}
+
+.logo, .busca, .barra-nav, .menu-principal{display:inline-block; vertical-align: middle;}
+
+.menu-principal li{float: left;}
+
+.menu-abrir, .menu-fechar{
+	background: none;
+	border: 0;
+	outline: 0;
+	-webkit-appearance: none;
+	font-size: 1.6em;
+	text-indent: -999em;
+}
+
+.menu-abrir{
+	height: 0;
+	width: .75em;
+	padding-top: .125em;
+	border-top: .375em double #000;
+	border-bottom: .125 solid #000;
+	vertical-align: middle;
+	margin: 0.5em;
+}
+
+.menu-fechar{
+	position: relative;
+	height: 1em;
+	width: 1em;
+}
+
+.menu-fechar:before{
+	content: '\00D7';
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-indent: 0;
+}
+
+.secao{
+  float: left;
+  width: 100%;
+}
+
+img{max-width: 100%;} /*Uma técnica simples mas importante em páginas responsivas é evitar que as imagens estourem os elementos que as contém, no caso de usarmos uma resolução baixa com uma imagem grande. Atingimos isso com o max-width.*/
+
+.mini{
+  float: left;
+  width: 50%;
+}
+
+/*MEDIA QUERIES MOBILE FIRST*/
+@media(max-width: 600px){
+	.barra-nav{
+		background: #f0f0f0;
+		padding: 1em;
+		margin: 0;
+		height: 100%;
+		width: 90%;
+		max-width: 320px;
+		position: fixed;
+		z-index: 1;
+		top: 0;
+		left: -90%;
+		transition: left 0.3s ease-out;
+
+	}
+	.menu-ativo .barra-nav{left: 0;}
+	.menu-ativo:after{
+		content: "";
+		display: block;
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(0, 0, 0, 0.4);
+	}
+	.menu-principal li{
+		padding: 1em 0;
+		width: 100%;
+	}
+}
+
+@media(min-width: 600px){
+	html{
+		font-size: 1.125em;
+	}
+
+	.menu-abrir, .menu-fechar{display:none;}
+}
+
+@media(min-width: 1000px){
+	html{
+		font-size: 1.25em;
+	}
+}
+
+@media(min-width: 600px){
+	.secao{
+		width: 50%;
+	}
+}
+
+@media(min-width:1000px){
+	.secao{
+		width: 33.333%;
+	}
+}
+
+/*
+Qualidade visual, Performance e Direção de arte
+Tudo isso que vimos até agora está ligado à nossa necessidade de melhorarmos a qualidade visual de nossas páginas. Quando pensamos em Imagens Responsivas, são vários os seus casos de uso:
+
+Qualidade visual: como já vimos, queremos boas imagens para todos os dispositivos.
+Performance: queremos que as imagens de maior resolução só sejam baixadas se estivermos em um dispositivo com capacidade de mostrar tal imagem. Não queremos desperdiçar downloads.
+Direção de arte: muitas vezes a melhor solução não é apenas aumentar ou diminuir o tamanho e a resolução das imagens. É interessante pensarmos em imagens diferentes para cada dispositivo para melhorar a experiência do usuário.
+Com as media queries conseguimos resolver todos esses casos. Já vimos um em relação à qualidade de imagem. No caso de substituição de imagem, temos:
+
+.foto {
+    background-image: url(foto-recorte.png);
+}
+
+@media (min-width: 800px) {
+    .foto {
+        background-image: url(foto-full.png);
+    }
+}
+Temos uma imagem para os dispositivos pequenos (foto-recorte.png) e outra para a versão desktop (foto-full.png).
+
+Outras alternativas em Imagens Responsivas
+Nosso próximo desafio é aprender a trabalhar com a tag "img". Ela recebe um src direto com o nome do arquivo que queremos carregar. Diferentemente do que fizemos com as media queries, aqui não conseguimos chamar ora uma imagem, ora outra.
+
+Existem alguns frameworks que permitem implementar uma lógica parecida com a das media queries para imagens responsivas, que nada mais fazem do que substituir o src. Porém, para a performance, eles são muito ruins: dependem de javascript e de downloads duplicados. Então evite utilizá-los.
+
+Veremos, então, algumas alternativas aos frameworks. Nos navegadores mais modernos já existem algumas soluções para tais cenários, como por exemplo:
+
+srcset: nos permite passar um conjunto de src's
+<img src="logo.png"
+     srcset="logohd.png 2x, logo.png 1x">
+É um conjunto de imagens, separadas por vírgulas, onde o "2x" e o "1x" significam o dPR da tela. Por ser um recurso novo, consulte se os navegadores para os quais quer dar suporte já o possuem.
+picture: uma nova ideia para o futuro (ainda com pouco suporte dos navegadores), que nos permite lógicas mais complexas que o src:
+<picture>
+  <source media="(min-width: 600px)" src="completa.jpg">
+  <source media="(min-width: 1000px)" src="grande.jpg">
+
+  <source src="recorte.jpg">
+
+  <img src="fallbackjpg">
+</picture>
+Com a tag "picture" podemos passar várias imagens por meio da tag "source" e tais imagens recebem uma media query e, com isso, podemos usar os recursos já conhecidos dentro do HTML para carregar ora uma imagem, ora outra.
+
+Com ambas as soluções conseguimos fazer as mesmas coisas que antes eram feitas com o CSS, só que agora para imagens no HTML: carregar imagem dependendo da resolução, do tamanho da tela e da direção de arte. Nunca esquecendo de consultar a compatibilidade dos navegadores para utilizar a solução mais adequada. Sendo as medias queries a que tem maior suporte.
+
+Otimizando com uma imagem
+Embora os códigos fiquem cada vez mais complexos, no dia-a-dia o maior trabalho está em criar diversas versões de uma mesma imagem. Em um cenário ideal, usaríamos apenas uma que fosse boa para todas as resoluções e dispositivos. A primeira razão para pensarmos isso no âmbito de imagens responsivas é em relação à performance.
+
+Não queremos, como já falamos, carregar uma imagem grande em um dispositivo de tela pequena. Achar uma solução em que utilizamos apenas uma imagem sem esquecer a performance, não precisaremos escrever uma série de linhas de código para trocar imagens a todo tempo. Vamos ver alguns casos.
+
+Compressive Images
+Pegamos uma imagem de tamanho 500px x 500px - relativamente grande para a Web - e a exportamos com uma qualidade de 80, com 80KB, tudo para telas comuns, de 1:1. Queremos que essa imagem tenha a mesma qualidade numa tela de retina, ou seja, precisaremos do dobro da resolução (em ambas as dimensões)
+
+Em uma resolução de 1000px x 1000px a imagem já está muito pesada. Veja essa segunda imagem, ela possui o mesmo tamanho de 80KB, porém é quatro vezes maior:
+
+A diferença é que, na hora de exportarmos, diminuímos a qualidade de 80 para 20. E perceba que a imagem não fica pixelada ou esteticamente pior necessariamente.
+
+Se utilizarmos uma imagem para telas de retina de baixa resolução, ela será usada em dois cenários diferentes:
+
+Em uma tela de retina propriamente dita, ocupando 1000px x 1000px. Porém, lembremos que os pixeis físicos são muito pequenos nessa tela e, ao usarmos uma imagem de qualidade baixa, mas com pixeis muito pequenos, o resultado visual é muito bom.
+Em uma telas normais, ocupando 1000px x 1000px. Como tais telas possuem menos pixeis, o navegador compactará a imagem para 500px x 500px, ou seja, teremos mais pixeis do que o necessário. O resultado final é que a imagem também fica boa.
+Perceba que com a técnica de Imagens Compressivas conseguimos utilizar apenas uma imagem em dois casos. Uma imagem grande de qualidade baixa. Nos exercícios veremos outros exemplos.
+
+Mudança de formato
+Uma outra técnica de otimização é reexportar a imagem com outro formato. Uma imagem pode ser otimizada ao mudarmos seu formato de PNG para PNG-8, por exemplo, que é muito bom para imagens em preto e branco ou com menos de 256 cores.
+
+Nos exercícios iremos treinar todas as técnicas que vimos nesta aula.
+
+********************************************************************************************
+********************************************************************************************
+
+Suporte SVG
+Se necessitamos de suporte para navegadores antigos, precisaremos para cada um dos ícones, além de sua versão SVG, da sua versão PNG. para exportar é bem simples: basta ir no editor de imagem e fazer para ambos os formatos.
+
+Para os navegadores antigos, entregamos a versão PNG. Para os novos a SVG. Na prática temos duas maneiras:
+
+O navegador tentará baixar a versão SVG, se houver erro ele troca para a versão PNG.
+
+<img src="logo.svg" onerror="this.src='logo.png'; this.onerror=null">
+
+
+Navegadores sem suporte não muito antigos, como o IE8, baixarão de qualquer forma o imagem SVG e só a substituirão quando ela der erro. Ou seja, há download duplicado. Como o IE8 está saindo do mercado, esse problema é mínimo. O mais importante é o suporte. De qualquer jeito, ainda existe uma segunda possibilidade usando o CSS.
+
+No CSS poderíamos acrescentar uma classe para verificar se o navegador tem suporte ao SVG ou não:
+.svg .logo {
+    background: url(logo.svg) no-repeat;
+}
+
+.no-svg .logo {
+    background: url(logo.png) no-repeat;
+}
+Um script que detecta esse suporte é o Modernizr, uma biblioteca JavaScript que automaticamente insere tais tags.
+
+
+*/
